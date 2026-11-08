@@ -1506,6 +1506,23 @@ const hb=$('homebar');if(hb){const clean=hb.cloneNode(true);hb.parentNode.replac
 
   function chatHeader(name){return `<div class="kt-roomhead"><button onclick="renderKakaoList()">‹</button><div class="kt-roomtitle">${escHtml(name)}</div><div class="kt-roomtools">⌕　☰</div></div>`;}
   function chatMessage(from,ko,zh,time=''){const mine=from==='김태영';return `<div class="kt-msg ${mine?'mine':''}">${mine?'':ktIncomingAvatar(from)}<div class="kt-msg-content"><div class="kt-bubbleline"><div class="kt-bubble">${escHtml(ko)}<div class="kt-translation">${escHtml(zh)}</div></div>${time?`<span class="kt-time">${escHtml(time)}</span>`:''}</div></div></div>`;}
+ const mornOpts=[
+  [
+    {ko:'응 일어났어',zh:'嗯，起床了。'},
+    {ko:'방금 일어났어 아직 졸려',zh:'剛起床，還有點睏。'},
+    {ko:'응 너는?',zh:'嗯，你呢？'}
+  ],
+  [
+    {ko:'응 고마워',zh:'嗯，謝謝。'},
+    {ko:'너도 오늘 화이팅',zh:'你今天也加油。'},
+    {ko:'끝나고 연락할게',zh:'結束後我再聯絡你。'}
+  ],
+  [
+    {ko:'좋아 같이 먹자',zh:'好啊，一起吃吧。'},
+    {ko:'뭐 먹고 싶은데?',zh:'你想吃什麼？'},
+    {ko:'연습 끝나고 정하자',zh:'練習結束後再決定吧。'}
+  ]
+];
   function renderMorningChat(){
     // Recover the visible dialogue step from actual player replies; never reveal a future line early.
     if(!state.kktWaiting){
