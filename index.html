@@ -1543,6 +1543,10 @@ const hb=$('homebar');if(hb){const clean=hb.cloneNode(true);hb.parentNode.replac
   }
   window.sendMorningReply=function(i,j){
     if(i!==state.kktMorningStage||state.day1Replies[i])return;
+        const compose=document.querySelector('.kt-compose');
+    if(compose){
+      compose.innerHTML='<div class="kt-compose-label">성민이가 입력 중⋯ · 安性珉正在輸入中⋯</div>';
+    }
     const o=mornOpts[i][j];state.day1Replies[i]=o;persist();
     const box=$('kt-messages');if(box){box.insertAdjacentHTML('beforeend',chatMessage('김태영',o.ko,o.zh));box.scrollTop=box.scrollHeight;}
     if(i<2){
