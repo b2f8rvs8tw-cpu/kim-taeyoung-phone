@@ -1889,6 +1889,22 @@ const hb=$('homebar');if(hb){const clean=hb.cloneNode(true);hb.parentNode.replac
     ],fans:[['떡볶이 맛있겠다ㅋㅋ','辣炒年糕看起來好吃ㅋㅋ'],['저녁 잘 챙겨 먹어요!','晚餐要好好吃喔！'],['오늘도 고생했어요','今天也辛苦了'],['누구랑 먹었을까ㅎㅎ','不知道跟誰一起吃呢ㅎㅎ'],['다들 맛있는 거 먹어요','大家都要吃好吃的']]}
   };
   const wait = ms => new Promise(resolve=>setTimeout(resolve,ms));
+  function getBubbleFanNames(key){
+  state.bubbleFanNames=state.bubbleFanNames||{};
+  let names=state.bubbleFanNames[key];
+
+  if(!Array.isArray(names)||names.length!==5){
+    const roots=['luvity','vity','tae','seong','blue','orange','cloud','daily','dear','luv','moon','always'];
+    const tails=['0325','0913','zip','day','love','_o0','_vity','archive','_luv','1024','cloud','star'];
+    names=[];
+    while(names.length<5){
+      const name=roots[Math.floor(Math.random()*roots.length)]+'_'+tails[Math.floor(Math.random()*tails.length)];
+      if(!names.includes(name))names.push(name);
+    }
+    state.bubbleFanNames[key]=names;
+  }
+  return names;
+}
   function appendBubbleItem(box,which,kind,ko,zh,photoSrc){
     const isT=which==='tae';
     const row=document.createElement('div');
@@ -1914,7 +1930,8 @@ const hb=$('homebar');if(hb){const clean=hb.cloneNode(true);hb.parentNode.replac
     const old=$('bubble-task-action');if(old)old.remove();
     const bar=document.createElement('div');bar.id='bubble-task-action';bar.className='bubble-task-action';
     const btn=document.createElement('button');btn.className='action';btn.textContent=label;btn.onclick=handler;bar.appendChild(btn);
-    $('appbody-content').appendChild(bar);
+    const room=$('appbody-content').querySelector('.bubble-room');
+if(room) room.appendChild(bar);
   }
   function renderBubbleTaskShell(which,step){
     state.app='bubble';state.bubbleCurrent=which;state.bubbleStep=step;
@@ -1928,7 +1945,7 @@ const hb=$('homebar');if(hb){const clean=hb.cloneNode(true);hb.parentNode.replac
     const token=++activeBubbleRun;const box=renderBubbleTaskShell(data.which,step);
     for(const [ko,zh] of data.messages){if(token!==activeBubbleRun)return;appendBubbleItem(box,data.which,'artist',ko,zh);await wait(720);}
     if(data.photo){if(token!==activeBubbleRun)return;appendBubbleItem(box,data.which,'photo','', '',storyPhotoSrc(data.photo));await wait(720);}
-    const fanNames=bubbleFanNamesFor(step);
+    const fanNames=getBubbleFanNames(step);
     for(let i=0;i<5;i++){if(token!==activeBubbleRun)return;appendBubbleItem(box,data.which,'fan',fanNames[i]+'　'+data.fans[i][0],data.fans[i][1]);await wait(560);}
     if(token!==activeBubbleRun)return;
     if(data.which==='tae'){
